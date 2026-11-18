@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b18">
+  <meta name="description" content="Weatherly — a clean, responsive live weather dashboard with a five-day forecast.">
+  <title>Weatherly — Live Weather Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Weatherly home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span>weatherly<span class="brand-period">.</span></span>
+      </a>
+      <div class="topbar-right">
+        <span class="live-indicator"><i></i> LIVE WEATHER</span>
+        <button class="unit-switch" id="unitToggle" type="button" aria-label="Switch temperature unit" title="Switch between Celsius and Fahrenheit">
+          <span class="unit-option active" data-unit="c">°C</span><span class="unit-divider">/</span><span class="unit-option" data-unit="f">°F</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow">YOUR WEATHER, AT A GLANCE</p>
+      <h1>Forecasts that help<br><span>you plan ahead.</span></h1>
+      <p class="intro-copy">A little clarity for whatever the day brings.</p>
+    </section>
+
+    <section class="search-wrap" aria-label="Search weather by city">
+      <form id="searchForm" class="search-form" novalidate>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
+        <label class="sr-only" for="cityInput">Enter a city</label>
+        <input id="cityInput" name="city" type="search" placeholder="Search a city... e.g. Indore" autocomplete="off" maxlength="70">
+        <button id="searchButton" type="submit"><span>Search</span><span aria-hidden="true">↗</span></button>
+      </form>
+      <div class="search-meta">
+        <span id="statusMessage" class="status-message" role="status" aria-live="polite">Try a city to see its current weather.</span>
+        <button id="locationButton" class="location-button" type="button" title="Use your current location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path></svg>
+          Use my location
+        </button>
+      </div>
+      <div id="suggestions" class="suggestions" hidden></div>
+    </section>
+
+    <section id="weatherContent" class="weather-content" aria-live="polite">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-art" aria-hidden="true"><span class="sun"></span><span class="cloud cloud-a"></span><span class="cloud cloud-b"></span></div>
+        <h2>Find your kind of weather.</h2>
+        <p>Search for a city above and your forecast will appear here.</p>
+        <div class="quick-cities">
+          <span>POPULAR CITIES</span>
+          <button type="button" data-city="Mumbai">Mumbai</button>
+          <button type="button" data-city="London">London</button>
+          <button type="button" data-city="Tokyo">Tokyo</button>
+          <button type="button" data-city="New York">New York</button>
+        </div>
+      </div>
+
+      <div id="results" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">CURRENT CONDITIONS</p><h2>Right now</h2></div>
+          <span class="updated-label" id="updatedAt">—</span>
+        </div>
+        <article class="current-card">
+          <div class="current-main">
+            <div class="place-line"><span class="pin-dot"></span><h3 id="placeName">—</h3><span id="countryName" class="country-name"></span></div>
+            <p class="current-date" id="currentDate">—</p>
+            <div class="temperature-row">
+              <div class="temperature" id="currentTemp">--<span>°</span></div>
+              <div class="condition-block"><div id="currentIcon" class="weather-symbol" aria-hidden="true">☀</div><p id="currentCondition">—</p></div>
+            </div>
+            <p class="feels-like" id="feelsLike">Live conditions from Open-Meteo</p>
+          </div>
+          <div class="current-side">
+            <div class="side-top"><span class="side-label">TODAY'S RANGE</span><span class="range-icon">↕</span></div>
+            <div class="range-values"><strong id="todayHigh">--°</strong><span>/</span><strong id="todayLow">--°</strong></div>
+            <div class="range-track"><span id="rangeFill"></span></div>
+            <p class="range-caption">High <span id="rangeHigh">--°</span><i></i> Low <span id="rangeLow">--°</span></p>
+            <div class="side-divider"></div>
+            <div class="mini-stats">
+              <div><span class="stat-icon">◌</span><span class="stat-label">Wind</span><strong id="windValue">-- km/h</strong></div>
+              <div><span class="stat-icon">⌁</span><span class="stat-label">Humidity</span><strong id="humidityValue">--%</strong></div>
+              <div><span class="stat-icon">◉</span><span class="stat-label">Daylight</span><strong id="daylightValue">—</strong></div>
+            </div>
+          </div>
+        </article>
+
+        <div class="section-heading forecast-heading">
+          <div><p class="eyebrow">THE WEEK AHEAD</p><h2>5-day forecast</h2></div>
+          <span class="forecast-note">A look at what's coming</span>
+        </div>
+        <div id="forecastGrid" class="forecast-grid"></div>
+        <p class="data-note"><span></span> Weather data provided by Open-Meteo · Forecasts may change.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>WEATHERLY <b>·</b> MADE FOR EVERYDAY PLANNING</span>
+      <span>Powered by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span>
+    </footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
